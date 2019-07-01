@@ -15,7 +15,7 @@ def main():
     casual_view_times = []
     build_customer_count = 0
     build_view_times = []
-    print("--- Customer Counter ---")
+    print("--- Host Companion App ---")
     print_menu(casual_customer_count, build_customer_count)
     menu_choice = int(input(">>> "))
 
@@ -24,13 +24,17 @@ def main():
             casual_customer_count += 1
             casual_view_times.append(get_current_time())
             pass
-        if menu_choice == 2:
+        elif menu_choice == 2:
+            build_customer_count += 1
+            build_view_times.append(get_current_time())
+        elif menu_choice == 3:
+            print("Casual/renovation customer view times: ")
+            print(casual_view_times)
+            print("Potential build customer view times:")
+            print(build_view_times)
+        elif menu_choice == 4:
             pass
-        if menu_choice == 3:
-            pass
-        if menu_choice == 4:
-            pass
-        if menu_choice == 5:
+        elif menu_choice == 5:
             pass
         else:
             print("Invalid input")
@@ -46,12 +50,12 @@ def print_menu(casual_count, build_count):
     if current_datetime.strftime("%A") in REPORT_DAYS:
         print("Today is a reporting day. Make sure to report after 3:30pm!")
     print("Current casual customer count: {}".format(casual_count))
-    print("Current potential 0-6m build customer count: {}".format(build_count))
+    print("Current potential 6-12 months build customer count: {}".format(build_count))
     print("_________MENU__________")
     print("1. Count casual customer")
     print("2. Count potential build customer")
-    print("3. view entry times")
-    print("4. Take customer details")
+    print("3. View entry times")
+    print("4. Customer details")
     print("5. Send weekly report")
     print("6. save and exit")
 
