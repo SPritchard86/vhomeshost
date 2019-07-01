@@ -20,3 +20,5 @@ class Customer():
 
     def __str__(self):
         return "Name: {} {} Address: {} Ph(M): {}, Ph(W): {} Ph(H): {} Fax(H): {} Fax(W): {} Email: {} House/Land budget: {} House only budget: {} Selling existing: {} Land details: {} Notes: {}".format(self.fname, self.lname, self.address, self.mobile_phone, self.work_phone, self.home_phone, self.home_fax, self.work_fax, self.email, self.house_land_budget, self.house_only_budget, self.is_selling_existing, self.land_details, self.notes)
+
+
