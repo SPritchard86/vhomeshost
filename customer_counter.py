@@ -15,6 +15,7 @@ def main():
     casual_view_times = []
     build_customer_count = 0
     build_view_times = []
+    customers = []
     print("--- Host Companion App ---")
     print_menu(casual_customer_count, build_customer_count)
     menu_choice = int(input(">>> "))
@@ -35,13 +36,54 @@ def main():
         elif menu_choice == 4:
             print_customer_menu()
             cust_menu_choice = int(input(">>> "))
-            while cust_menu_choice != 4:
+            while cust_menu_choice != 5:
                 if cust_menu_choice == 1:
-                    create_customer()
+                    customer = int(input("Enter customer number: "))
+                    print("Name: {} {}".format(customers[customer - 1].fname, customers[customer - 1].lname))
+                    print("Address: {}".format(customers[customer - 1].address))
+                    print("Ph(Mobile): {}".format(customers[customer - 1].mobile_phone))
+                    print("Ph(Work): {}".format(customers[customer - 1].work_phone))
+                    print("Ph(Home): {}".format(customers[customer - 1].home_phone))
+                    print("Fax(Home): {}".format(customers[customer - 1].home_fax))
+                    print("Fax(Work): {}".format(customers[customer - 1].work_fax))
+                    print("Email: {}".format(customers[customer - 1].email))
+                    print("House/Land budget: {}".format(customers[customer - 1].house_land_budget))
+                    print("House only budget: {}".format(customers[customer - 1].house_only_budget))
+                    print("Is Selling existing: {}".format(customers[customer - 1].is_selling_existing))
+                    print("Land details: {}".format(customers[customer - 1].land_details))
+                    print("Notes: {}".format(customers[customer - 1].notes))
+
                 elif cust_menu_choice == 2:
-                    pass
+                    customer = create_customer()
+                    customers.append(customer)
+
                 elif cust_menu_choice == 3:
+                    customer = int(input("Enter customer number: "))
+                    print("1. First name")
+                    print("2. Last name")
+                    print("3. Address")
+                    print("4. Ph(Mobile)")
+                    print("5. Ph(Work)")
+                    print("6. Ph(Home)")
+                    print("7. Fax(Home)")
+                    print("8. Fax(Work)")
+                    print("9. Email")
+                    print("10. House/Land budget")
+                    print("11. House only budget")
+                    print("12. Is selling existing(Y/N)")
+                    print("13. Land details")
+                    print("14. Notes")
+                    edit_choice = int(input("Enter detail to edit: "))
+                    new_detail = input("Enter new details: ")
+                    if new_detail.upper() == "Y":
+                        new_detail = True
+                    if new_detail.upper() == "N":
+                        new_detail = False
+                    update_details(edit_choice, new_detail)
+
+                elif cust_menu_choice == 4:
                     pass
+
                 else:
                     print("Invalid option")
                 print_customer_menu()
@@ -74,11 +116,13 @@ def print_menu(casual_count, build_count):
 
 
 def print_customer_menu():
-    print("__________CUSTOMER DETAILS__________")
-    print("1. Add new customer")
-    print("2. Edit customer details")
-    print("3. Remove customer")
-    print("4. Return to main menu")
+    print("__________CUSTOMER MENU__________")
+    print("1. Customer Details")
+    print("2. Add new customer")
+    print("3. Edit customer details")
+    print("4. Remove customer")
+    print("5. Return to main menu")
+
 
 def get_current_time():
     current_datetime = datetime.datetime.now()
@@ -104,6 +148,22 @@ def create_customer():
     land_details = input("Land details: ")
     notes = input("notes: ")
     return Customer(fname, lname, address, mobile_phone, work_phone, home_phone, home_fax, work_fax, email, house_land_budget, house_only_budget, is_selling_existing, land_details, notes)
+
+
+def list_customers(customers)
+    if len(customers) = 0:
+        print("No customers currently stored.")
+        return
+    else
+        customer_counter = 1
+        print("_____________________________")
+        for customer in customers:
+            print("{}. {} {}".format(customer_counter, customer.fname, customer.lname))
+            customer_counter += 1
+
+
+def update_details(choice, details):
+    selection = {"1": "fname", "2": "lname", "3": "address", "4": "mobile_phone", "5": "work_phone", "6": "home_phone", "7": "home_fax", "8": "work_fax", "9": "email", "10": "house_land_budget", "11": "house_only_budget", "12": "is_selling_existing", "13": "land_details", "14": "notes"}
 
 
 
