@@ -22,3 +22,44 @@ class Customer():
         return "Name: {} {} Address: {} Ph(M): {}, Ph(W): {} Ph(H): {} Fax(H): {} Fax(W): {} Email: {} House/Land budget: {} House only budget: {} Selling existing: {} Land details: {} Notes: {}".format(self.fname, self.lname, self.address, self.mobile_phone, self.work_phone, self.home_phone, self.home_fax, self.work_fax, self.email, self.house_land_budget, self.house_only_budget, self.is_selling_existing, self.land_details, self.notes)
 
 
+    def edit_fname(self, detail):
+        self.fname = detail
+
+    def edit_lname(self, detail):
+        self.lname = detail
+
+    def edit_address(self, detail):
+        self.address = detail
+
+    def edit_mobile_phone(self, detail):
+        self.mobile_phone = detail
+
+    def edit_work_phone(self, detail):
+        self.work_phone = detail
+
+    def edit_home_phone(self, detail):
+        self.home_phone = detail
+
+    def edit_home_fax(self, detail):
+        self.home_fax = detail
+
+    def edit_work_fax(self, detail):
+        self.work_fax = detail
+
+    def edit_email(self, detail):
+        self.email = detail
+
+    def edit_house_land_budget(self, detail):
+        self.house_land_budget = detail
+
+    def edit_house_only_budget(self, detail):
+        self.house_only_budget = detail
+
+    def edit_is_selling_existing(self, detail):
+        self.is_selling_existing = detail
+
+    def edit_land_details(self, detail):
+        self.land_details = detail
+
+    def edit_notes(self, detail):
+        self.notes = detail

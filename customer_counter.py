@@ -8,7 +8,9 @@ from customer import Customer
 import datetime
 
 REPORT_DAYS = ["Sunday", "Tuesday"]
+REPORT_EMAILS = ["stephen.pritchard@my.jcu.edu.au"]
 CURRENT_WEEK_FILE = "customers.csv"
+
 
 def main():
     casual_customer_count = 0
@@ -85,7 +87,7 @@ def main():
                         new_detail = True
                     if new_detail.upper() == "N":
                         new_detail = False
-                    # update_details(edit_choice, new_detail, customer, customers)
+                    update_details(edit_choice, new_detail, customer, customers)
 
                 elif cust_menu_choice == 4:
                     pass
@@ -168,9 +170,11 @@ def list_customers(customers):
             customer_counter += 1
 
 
- #def update_details(choice, details, customer, customers):
- #   selection = {"1": "fname", "2": "lname", "3": "address", "4": "mobile_phone", "5": "work_phone", "6": "home_phone", "7": "home_fax", "8": "work_fax", "9": "email", "10": "house_land_budget", "11": "house_only_budget", "12": "is_selling_existing", "13": "land_details", "14": "notes"}
- #   customers[customer - 1]
+ def update_details(choice, details, customer, customers):
+    selection = {"1": "fname", "2": "lname", "3": "address", "4": "mobile_phone", "5": "work_phone", "6": "home_phone", "7": "home_fax", "8": "work_fax", "9": "email", "10": "house_land_budget", "11": "house_only_budget", "12": "is_selling_existing", "13": "land_details", "14": "notes"}
+
+    if selection == 1:
+        customers[customer - 1]
 
 
 
