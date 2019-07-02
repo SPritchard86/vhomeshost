@@ -1,0 +1,27 @@
+user@computer ~ $ cat reportemail.txt
+
+Dear ${PERSON_NAME},
+
+A customer would like for you to contact them in relation to answering enquiries about a project in ${LOCATION}.
+Their details follow.
+
+               First name: ${FIRST_NAME}
+                Last name: ${LAST_NAME}
+                    Email: ${EMAIL}
+                  Address: ${ADDRESS}
+              Work number: ${WORK_NUMBER}
+              Home number: ${HOME_NUMBER}
+            Mobile number: ${MOBILE_NUMBER}
+                 Work fax: ${WORK_FAX}
+                 Home fax: ${HOME_FAX}
+        House/Land budget: ${HOUSE_LAND_BUDGET}
+        House only budget: ${HOUSE_ONLY_BUDGET}
+Selling existing property: ${SELLING_EXISTING}
+             Land details: ${LAND_DETAILS}
+                    Notes: ${NOTES}
+
+
+${FURTHER_INFO}
+
+Yours Truly,
+${HOST_NAME}

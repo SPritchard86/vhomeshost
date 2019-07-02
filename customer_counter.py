@@ -21,7 +21,7 @@ def main():
     print("--- Host Companion App ---")
     print_menu(casual_customer_count, build_customer_count)
     menu_choice = int(input(">>> "))
-    
+
     while menu_choice != 6:
         if menu_choice == 1:
             casual_customer_count += 1
