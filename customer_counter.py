@@ -21,9 +21,37 @@ PASSWORD = 'Value2019'
 HOST_NAME = "Steve Pritchard"
 LOCATION = "Elliot Springs"
 
+MESSAGE = """Dear {CONSULTANT},
+
+A customer would like for you to contact them in relation to answering enquiries about a project in {LOCATION}.
+Their details follow.
+
+               First name: {FIRST_NAME}
+                Last name: {LAST_NAME}
+                    Email: {EMAIL}
+                  Address: {ADDRESS}
+              Work number: {WORK_NUMBER}
+              Home number: {HOME_NUMBER}
+            Mobile number: {MOBILE_NUMBER}
+                 Work fax: {WORK_FAX}
+                 Home fax: {HOME_FAX}
+        House/Land budget: {HOUSE_LAND_BUDGET}
+        House only budget: {HOUSE_ONLY_BUDGET}
+Selling existing property: {SELLING_EXISTING}
+             Land details: {LAND_DETAILS}
+                    Notes: {NOTES}
+
+
+{FURTHER_INFO}
+
+Yours Truly,
+{HOST_NAME}"""
+
+
+
 def main():
 
-    s = smtplib.SMTP(host='smtp.gmail.com', port=465)
+    s = smtplib.SMTP(host='smtp.gmail.com', port=587)
     s.starttls()
     s.login(MY_ADDRESS, PASSWORD)
     message_template = read_template(TEMPLATE_FILE)
@@ -118,24 +146,25 @@ def main():
                     except ValueError:
                         print("Enter a valid number.")
                 elif cust_menu_choice == 5:
-                    try:
-                        customer = int(input("Enter customer number to forward via email: "))
-                        further_info = input("Please enter any additional customer information: ")
-                        msg = MIMEMultipart()  # create a message
-                        message = message_template.substitute(CONSULTANT_NAME=CONSULTANT_NAME, LOCATION=LOCATION, FIRST_NAME=customers[customer - 1].fname, LAST_NAME=customers[customer - 1].lname, EMAIL=customers[customer - 1].email, ADDRESS=customers[customer - 1].address, WORK_NUMBER=customers[customer - 1].work_phone, HOME_NUMBER=customers[customer - 1].home_phone, MOBILE_NUMBER=customers[customer - 1].mobile_phone, WORK_FAX=customers[customer - 1].work_fax, HOME_FAX=customers[customer - 1].home_fax, HOUSE_LAND_BUDGET=customers[customer - 1].house_land_budget, HOUSE_ONLY_BUDGET=customers[customer - 1].house_only_budget, SELLING_EXISTING=customers[customer - 1].is_selling_existing, LAND_DETAILS=customers[customer - 1].land_details, NOTES=customers[customer - 1].notes, FURTHER_INFO=further_info, HOST_NAME=HOST_NAME)
+                    customer = int(input("Enter customer number to forward via email: "))
+                    further_info = input("Please enter any additional customer information: ")
+                    msg = MIMEMultipart()  # create a message
+                    # message = message_template.substitute(CONSULTANT=CONSULTANT_NAME, LOCATION=LOCATION, FIRST_NAME=customers[customer - 1].fname, LAST_NAME=customers[customer - 1].lname, EMAIL=customers[customer - 1].email, ADDRESS=customers[customer - 1].address, WORK_NUMBER=customers[customer - 1].work_phone, HOME_NUMBER=customers[customer - 1].home_phone, MOBILE_NUMBER=customers[customer - 1].mobile_phone, WORK_FAX=customers[customer - 1].work_fax, HOME_FAX=customers[customer - 1].home_fax, HOUSE_LAND_BUDGET=customers[customer - 1].house_land_budget, HOUSE_ONLY_BUDGET=customers[customer - 1].house_only_budget, SELLING_EXISTING=customers[customer - 1].is_selling_existing, LAND_DETAILS=customers[customer - 1].land_details, NOTES=customers[customer - 1].notes, FURTHER_INFO=further_info, HOST_NAME=HOST_NAME)
 
-                        msg['From'] = MY_ADDRESS
-                        msg['To'] = CONSULTANT_EMAILS
-                        msg['Subject'] = "Customer Details, location: " + LOCATION
-                        msg.attach(MIMEText(message, 'plain'))
-                        s.send_message(msg)
 
-                        del msg
 
-                    except IndexError:
-                        print("Invalid customer number.")
-                    except ValueError:
-                        print("Enter a valid number.")
+                    msg['From'] = MY_ADDRESS
+                    msg['To'] = CONSULTANT_EMAILS[0]
+                    msg['Subject'] = "Customer Details, location: " + LOCATION
+                    msg.attach(MIMEText(MESSAGE.format(CONSULTANT=CONSULTANT_NAME[0], LOCATION=LOCATION, FIRST_NAME=customers[customer - 1].fname, LAST_NAME=customers[customer - 1].lname, EMAIL=customers[customer - 1].email, ADDRESS=customers[customer - 1].address, WORK_NUMBER=customers[customer - 1].work_phone, HOME_NUMBER=customers[customer - 1].home_phone, MOBILE_NUMBER=customers[customer - 1].mobile_phone, WORK_FAX=customers[customer - 1].work_fax, HOME_FAX=customers[customer - 1].home_fax, HOUSE_LAND_BUDGET=customers[customer - 1].house_land_budget, HOUSE_ONLY_BUDGET=customers[customer - 1].house_only_budget, SELLING_EXISTING=customers[customer - 1].is_selling_existing, LAND_DETAILS=customers[customer - 1].land_details, NOTES=customers[customer - 1].notes, FURTHER_INFO=further_info, HOST_NAME=HOST_NAME), 'plain'))
+                    s.send_message(msg)
+
+                    del msg
+
+                    #except IndexError:
+                    #    print("Invalid customer number.")
+                    #except ValueError:
+                     #   print("Enter a valid number.")
 
                 else:
                     print("Invalid option")
