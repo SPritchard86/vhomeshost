@@ -1,6 +1,6 @@
-user@computer ~ $ cat reportemail.txt
+user@computer ~ $ cat customeremail.txt
 
-Dear ${PERSON_NAME},
+Dear ${CONSULTANT_NAME},
 
 A customer would like for you to contact them in relation to answering enquiries about a project in ${LOCATION}.
 Their details follow.

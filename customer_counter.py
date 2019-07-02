@@ -5,14 +5,29 @@ Date: 1/07/2019
 """
 
 from customer import Customer
+from string import Template
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 import datetime
+import smtplib
 
 REPORT_DAYS = ["Sunday", "Tuesday"]
-REPORT_EMAILS = ["stephen.pritchard@my.jcu.edu.au"]
+CONSULTANT_EMAILS = ["stephen.pritchard@my.jcu.edu.au"]
+CONSULTANT_NAME = ["Stephen"]
 CURRENT_WEEK_FILE = "customers.csv"
-
+TEMPLATE_FILE = "customeremail.txt"
+MY_ADDRESS = 'valuehomeshost@gmail.com'
+PASSWORD = 'Value2019'
+HOST_NAME = "Steve Pritchard"
+LOCATION = "Elliot Springs"
 
 def main():
+
+    s = smtplib.SMTP(host='smtp.gmail.com', port=465)
+    s.starttls()
+    s.login(MY_ADDRESS, PASSWORD)
+    message_template = read_template(TEMPLATE_FILE)
+
     casual_customer_count = 0
     casual_view_times = []
     build_customer_count = 0
@@ -39,7 +54,7 @@ def main():
             list_customers(customers)
             print_customer_menu()
             cust_menu_choice = int(input(">>> "))
-            while cust_menu_choice != 5:
+            while cust_menu_choice != 6:
                 list_customers(customers)
                 if cust_menu_choice == 1:
                     if len(customers) >= 1:
@@ -102,6 +117,26 @@ def main():
                         print("Invalid customer number.")
                     except ValueError:
                         print("Enter a valid number.")
+                elif cust_menu_choice == 5:
+                    try:
+                        customer = int(input("Enter customer number to forward via email: "))
+                        further_info = input("Please enter any additional customer information: ")
+                        msg = MIMEMultipart()  # create a message
+                        message = message_template.substitute(CONSULTANT_NAME=CONSULTANT_NAME, LOCATION=LOCATION, FIRST_NAME=customers[customer - 1].fname, LAST_NAME=customers[customer - 1].lname, EMAIL=customers[customer - 1].email, ADDRESS=customers[customer - 1].address, WORK_NUMBER=customers[customer - 1].work_phone, HOME_NUMBER=customers[customer - 1].home_phone, MOBILE_NUMBER=customers[customer - 1].mobile_phone, WORK_FAX=customers[customer - 1].work_fax, HOME_FAX=customers[customer - 1].home_fax, HOUSE_LAND_BUDGET=customers[customer - 1].house_land_budget, HOUSE_ONLY_BUDGET=customers[customer - 1].house_only_budget, SELLING_EXISTING=customers[customer - 1].is_selling_existing, LAND_DETAILS=customers[customer - 1].land_details, NOTES=customers[customer - 1].notes, FURTHER_INFO=further_info, HOST_NAME=HOST_NAME)
+
+                        msg['From'] = MY_ADDRESS
+                        msg['To'] = CONSULTANT_EMAILS
+                        msg['Subject'] = "Customer Details, location: " + LOCATION
+                        msg.attach(MIMEText(message, 'plain'))
+                        s.send_message(msg)
+
+                        del msg
+
+                    except IndexError:
+                        print("Invalid customer number.")
+                    except ValueError:
+                        print("Enter a valid number.")
+
                 else:
                     print("Invalid option")
                 print_customer_menu()
@@ -139,7 +174,8 @@ def print_customer_menu():
     print("2. Add new customer")
     print("3. Edit customer details")
     print("4. Remove customer")
-    print("5. Return to main menu")
+    print("5. Forward customer details via email")
+    print("6. Return to main menu")
 
 
 def get_current_time():
@@ -229,6 +265,14 @@ def update_details(choice, details, customer, customers):
         print("Invalid customer number")
     except ValueError:
         print("Enter a valid number.")
+
+
+def read_template(TEMPLATE_FILE):
+    with open(TEMPLATE_FILE, 'r', encoding='utf-8') as template_file:
+        template_file_content = template_file.read()
+    return Template(template_file_content)
+
+
 
 main()
 
