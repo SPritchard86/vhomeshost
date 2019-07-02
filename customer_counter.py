@@ -21,7 +21,7 @@ def main():
     print("--- Host Companion App ---")
     print_menu(casual_customer_count, build_customer_count)
     menu_choice = int(input(">>> "))
-
+    
     while menu_choice != 6:
         if menu_choice == 1:
             casual_customer_count += 1
@@ -43,23 +43,28 @@ def main():
                 list_customers(customers)
                 if cust_menu_choice == 1:
                     if len(customers) >= 1:
-
-                        customer = int(input("Enter customer number: "))
-                        print("Name: {} {}".format(customers[customer - 1].fname, customers[customer - 1].lname))
-                        print("Address: {}".format(customers[customer - 1].address))
-                        print("Ph(Mobile): {}".format(customers[customer - 1].mobile_phone))
-                        print("Ph(Work): {}".format(customers[customer - 1].work_phone))
-                        print("Ph(Home): {}".format(customers[customer - 1].home_phone))
-                        print("Fax(Home): {}".format(customers[customer - 1].home_fax))
-                        print("Fax(Work): {}".format(customers[customer - 1].work_fax))
-                        print("Email: {}".format(customers[customer - 1].email))
-                        print("House/Land budget: {}".format(customers[customer - 1].house_land_budget))
-                        print("House only budget: {}".format(customers[customer - 1].house_only_budget))
-                        print("Is Selling existing: {}".format(customers[customer - 1].is_selling_existing))
-                        print("Land details: {}".format(customers[customer - 1].land_details))
-                        print("Notes: {}".format(customers[customer - 1].notes))
+                        try:
+                            customer = int(input("Enter customer number: "))
+                            print("Name: {} {}".format(customers[customer - 1].fname, customers[customer - 1].lname))
+                            print("Address: {}".format(customers[customer - 1].address))
+                            print("Ph(Mobile): {}".format(customers[customer - 1].mobile_phone))
+                            print("Ph(Work): {}".format(customers[customer - 1].work_phone))
+                            print("Ph(Home): {}".format(customers[customer - 1].home_phone))
+                            print("Fax(Home): {}".format(customers[customer - 1].home_fax))
+                            print("Fax(Work): {}".format(customers[customer - 1].work_fax))
+                            print("Email: {}".format(customers[customer - 1].email))
+                            print("House/Land budget: {}".format(customers[customer - 1].house_land_budget))
+                            print("House only budget: {}".format(customers[customer - 1].house_only_budget))
+                            print("Is Selling existing: {}".format(customers[customer - 1].is_selling_existing))
+                            print("Land details: {}".format(customers[customer - 1].land_details))
+                            print("Notes: {}".format(customers[customer - 1].notes))
+                        except IndexError:
+                            print("Invalid customer")
+                        except ValueError:
+                            print("Enter a valid number.")
                     else:
                         print("No customers stored")
+
 
                 elif cust_menu_choice == 2:
                     customer = create_customer()
@@ -90,8 +95,13 @@ def main():
                     update_details(edit_choice, new_detail, customer, customers)
 
                 elif cust_menu_choice == 4:
-                    pass
-
+                    try:
+                        customer = int(input("Enter customer number to remove: "))
+                        del customers[customer - 1]
+                    except IndexError:
+                        print("Invalid customer number.")
+                    except ValueError:
+                        print("Enter a valid number.")
                 else:
                     print("Invalid option")
                 print_customer_menu()
@@ -136,6 +146,7 @@ def get_current_time():
     current_datetime = datetime.datetime.now()
     return current_datetime.strftime("%X")
 
+
 def create_customer():
     fname = input("First name: ")
     lname = input("Last name: ")
@@ -170,13 +181,54 @@ def list_customers(customers):
             customer_counter += 1
 
 
- def update_details(choice, details, customer, customers):
-    selection = {"1": "fname", "2": "lname", "3": "address", "4": "mobile_phone", "5": "work_phone", "6": "home_phone", "7": "home_fax", "8": "work_fax", "9": "email", "10": "house_land_budget", "11": "house_only_budget", "12": "is_selling_existing", "13": "land_details", "14": "notes"}
+def update_details(choice, details, customer, customers):
+    try:
 
-    if selection == 1:
-        customers[customer - 1]
+        if choice == 1:
+            customers[customer - 1].edit_fname(details)
 
+        elif choice == 2:
+            customers[customer - 1].edit_lname(details)
 
+        elif choice == 3:
+            customers[customer - 1].edit_address(details)
+
+        elif choice == 4:
+            customers[customer - 1].edit_mobile_phone(details)
+
+        elif choice == 5:
+            customers[customer - 1].edit_work_phone(details)
+
+        elif choice == 6:
+            customers[customer - 1].edit_home_phone(details)
+
+        elif choice == 7:
+            customers[customer - 1].edit_home_fax(details)
+
+        elif choice == 8:
+            customers[customer - 1].edit_work_fax(details)
+
+        elif choice == 9:
+            customers[customer - 1].edit_email(details)
+
+        elif choice == 10:
+            customers[customer - 1].edit_house_land_budget(details)
+
+        elif choice == 11:
+            customers[customer - 1].edit_house_only_budget(details)
+
+        elif choice == 12:
+            customers[customer - 1].edit_is_selling_something(details)
+
+        elif choice == 13:
+            customers[customer - 1].edit_land_details(details)
+
+        elif choice == 14:
+            customers[customer - 1].edit_notes(details)
+    except IndexError:
+        print("Invalid customer number")
+    except ValueError:
+        print("Enter a valid number.")
 
 main()
 
