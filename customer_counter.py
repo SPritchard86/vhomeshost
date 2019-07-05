@@ -7,6 +7,7 @@ Date: 1/07/2019
 from customer import Customer
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from daily_tracker import Dailytracker
 import datetime
 import smtplib
 
@@ -62,7 +63,7 @@ def main():
     print_menu(casual_customer_count, build_customer_count)
     menu_choice = int(input(">>> "))
 
-    while menu_choice != 6:
+    while menu_choice != 7:
         if menu_choice == 1:
             casual_customer_count += 1
             view_times.append(get_current_time())
@@ -71,10 +72,8 @@ def main():
             build_customer_count += 1
             view_times.append(get_current_time())
         elif menu_choice == 3:
-            print("Casual/renovation customer view times: ")
-            print(casual_view_times)
-            print("Potential build customer view times:")
-            print(build_view_times)
+            print("Entry times for todays customers: ")
+            print(view_times)
         elif menu_choice == 4:
             list_customers(customers)
             print_customer_menu()
@@ -164,15 +163,41 @@ def main():
                 cust_menu_choice = int(input(">>> "))
 
         elif menu_choice == 5:
+            in_file = open("daily_tracker.csv", "r")
+            daily_backup = in_file.read()
+            split_backup = daily_backup.split(",")
+            print("Loading last saved details for {}.".format(split_backup[0]))
+            print("Casual customers: {}".format(split_backup[1]))
+            print("Potential build customers: {}".format(split_backup[2]))
+            print("Customer entry times: {}".format([time + ", " for time in split_backup[3:]]))
+            in_file.close()
+
+            casual_customer_count = int(split_backup[1])
+            build_customer_count = int(split_backup[2])
+            for time in split_backup[3:]:
+                view_times.append(time)
+
+
+        elif menu_choice == 6:
             pass
+
         else:
             print("Invalid input")
         print_menu(casual_customer_count, build_customer_count)
         menu_choice = int(input(">>> "))
 
+    current_datetime = datetime.datetime.now()
+    today = current_datetime.strftime("%A")
+
+    todays_count = Dailytracker(today, str(casual_customer_count), str(build_customer_count), view_times)
+    today_string = todays_count.current_day + "," + todays_count.casual_customer_count + "," + todays_count.build_customer_count
+    for time in todays_count.entry_times:
+        today_string += "," + str(time)
     print("Saving current daily count...")
     out_file = open("daily_tracker.csv", 'w')
-    out_file.write()
+    out_file.write(today_string)
+    out_file.close()
+    print("Saved in daily_tracker.csv")
     print("Goodbye")
 
 
@@ -189,8 +214,9 @@ def print_menu(casual_count, build_count):
     print("2. Count potential build customer")
     print("3. View entry times")
     print("4. Customer details")
-    print("5. Send weekly report")
-    print("6. save and exit")
+    print("5. reload backup daily details (Use in case of accidental quit)")
+    print("6. Send weekly report")
+    print("7. save and exit")
 
 
 def print_customer_menu():
@@ -293,4 +319,5 @@ def update_details(choice, details, customer, customers):
 
 
 main()
+
 
