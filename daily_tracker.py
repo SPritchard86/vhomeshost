@@ -1,7 +1,7 @@
 class Dailytracker():
     """Formulate and store the count for the day."""
 
-    def __init__(self, current_day = "", current_date = "", casual_customer_count = 0, build_customer_count = 0, entry_times = []):
+    def __init__(self, current_day = "", current_date = "", casual_customer_count = 0, build_customer_count = 0, entry_times = [0]):
 
         self.current_day = current_day
         self.current_date = current_date
