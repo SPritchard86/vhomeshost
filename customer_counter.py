@@ -1,11 +1,10 @@
 """
-Program to count people viewing a property.
+Program to count people viewing a property, send reports to consultant and capture potential customer details.
 Author: Stephen Pritchard
 Date: 1/07/2019
 """
 
 from customer import Customer
-from string import Template
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import datetime
@@ -15,13 +14,12 @@ REPORT_DAYS = ["Sunday", "Tuesday"]
 CONSULTANT_EMAILS = ["stephen.pritchard@my.jcu.edu.au"]
 CONSULTANT_NAME = ["Stephen"]
 CURRENT_WEEK_FILE = "customers.csv"
-TEMPLATE_FILE = "customeremail.txt"
 MY_ADDRESS = 'valuehomeshost@gmail.com'
 PASSWORD = 'Value2019'
 HOST_NAME = "Steve Pritchard"
 LOCATION = "Elliot Springs"
 
-MESSAGE = """Dear {CONSULTANT},
+CUSTOMER_TEMPLATE = """Dear {CONSULTANT},
 
 A customer would like for you to contact them in relation to answering enquiries about a project in {LOCATION}.
 Their details follow.
@@ -54,13 +52,12 @@ def main():
     s = smtplib.SMTP(host='smtp.gmail.com', port=587)
     s.starttls()
     s.login(MY_ADDRESS, PASSWORD)
-    message_template = read_template(TEMPLATE_FILE)
 
     casual_customer_count = 0
-    casual_view_times = []
     build_customer_count = 0
-    build_view_times = []
+    view_times = []
     customers = []
+
     print("--- Host Companion App ---")
     print_menu(casual_customer_count, build_customer_count)
     menu_choice = int(input(">>> "))
@@ -68,11 +65,11 @@ def main():
     while menu_choice != 6:
         if menu_choice == 1:
             casual_customer_count += 1
-            casual_view_times.append(get_current_time())
+            view_times.append(get_current_time())
             pass
         elif menu_choice == 2:
             build_customer_count += 1
-            build_view_times.append(get_current_time())
+            view_times.append(get_current_time())
         elif menu_choice == 3:
             print("Casual/renovation customer view times: ")
             print(casual_view_times)
@@ -156,7 +153,7 @@ def main():
                     msg['From'] = MY_ADDRESS
                     msg['To'] = CONSULTANT_EMAILS[0]
                     msg['Subject'] = "Customer Details, location: " + LOCATION
-                    msg.attach(MIMEText(MESSAGE.format(CONSULTANT=CONSULTANT_NAME[0], LOCATION=LOCATION, FIRST_NAME=customers[customer - 1].fname, LAST_NAME=customers[customer - 1].lname, EMAIL=customers[customer - 1].email, ADDRESS=customers[customer - 1].address, WORK_NUMBER=customers[customer - 1].work_phone, HOME_NUMBER=customers[customer - 1].home_phone, MOBILE_NUMBER=customers[customer - 1].mobile_phone, WORK_FAX=customers[customer - 1].work_fax, HOME_FAX=customers[customer - 1].home_fax, HOUSE_LAND_BUDGET=customers[customer - 1].house_land_budget, HOUSE_ONLY_BUDGET=customers[customer - 1].house_only_budget, SELLING_EXISTING=customers[customer - 1].is_selling_existing, LAND_DETAILS=customers[customer - 1].land_details, NOTES=customers[customer - 1].notes, FURTHER_INFO=further_info, HOST_NAME=HOST_NAME), 'plain'))
+                    msg.attach(MIMEText(CUSTOMER_TEMPLATE.format(CONSULTANT=CONSULTANT_NAME[0], LOCATION=LOCATION, FIRST_NAME=customers[customer - 1].fname, LAST_NAME=customers[customer - 1].lname, EMAIL=customers[customer - 1].email, ADDRESS=customers[customer - 1].address, WORK_NUMBER=customers[customer - 1].work_phone, HOME_NUMBER=customers[customer - 1].home_phone, MOBILE_NUMBER=customers[customer - 1].mobile_phone, WORK_FAX=customers[customer - 1].work_fax, HOME_FAX=customers[customer - 1].home_fax, HOUSE_LAND_BUDGET=customers[customer - 1].house_land_budget, HOUSE_ONLY_BUDGET=customers[customer - 1].house_only_budget, SELLING_EXISTING=customers[customer - 1].is_selling_existing, LAND_DETAILS=customers[customer - 1].land_details, NOTES=customers[customer - 1].notes, FURTHER_INFO=further_info, HOST_NAME=HOST_NAME), 'plain'))
                     s.send_message(msg)
                     print("Email sent.")
                     del msg
@@ -172,6 +169,10 @@ def main():
             print("Invalid input")
         print_menu(casual_customer_count, build_customer_count)
         menu_choice = int(input(">>> "))
+
+    print("Saving current daily count...")
+    out_file = open("daily_tracker.csv", 'w')
+    out_file.write()
     print("Goodbye")
 
 
@@ -289,13 +290,6 @@ def update_details(choice, details, customer, customers):
         print("Invalid customer number")
     except ValueError:
         print("Enter a valid number.")
-
-
-def read_template(TEMPLATE_FILE):
-    with open(TEMPLATE_FILE, 'r', encoding='utf-8') as template_file:
-        template_file_content = template_file.read()
-    return Template(template_file_content)
-
 
 
 main()

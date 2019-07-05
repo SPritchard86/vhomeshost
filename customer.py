@@ -1,4 +1,5 @@
 class Customer():
+    """Class to store and edit customer details."""
 
     def __init__(self, fname = "", lname = "", address = "", mobile_phone = "", work_phone = "", home_phone = "", home_fax = "", work_fax = "", email = "", house_land_budget = 0, house_only_budget = 0, is_selling_existing = False, land_details = "", notes = ""):
         '''constructor'''
