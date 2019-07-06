@@ -85,7 +85,6 @@ def main():
         if menu_choice == 1:
             casual_customer_count += 1
             view_times.append(get_current_time())
-            pass
         elif menu_choice == 2:
             build_customer_count += 1
             view_times.append(get_current_time())
@@ -247,7 +246,7 @@ def main():
                 msg['From'] = MY_ADDRESS
                 msg['To'] = CONSULTANT_EMAILS[0]
                 msg['Subject'] = "Weekly report, location: " + LOCATION
-                msg.attach(MIMEText(template_7days_1 + template_7days_2 + template_7days_3))
+                msg.attach(MIMEText(total_template))
                 s.send_message(msg)
                 print("Email sent.")
                 del msg
